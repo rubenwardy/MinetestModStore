@@ -1,0 +1,29 @@
+{% include "header" %}
+
+<aside>
+	<h2>Mods Search</h2>
+
+	<form action="/mods/" method="get">
+		<input type="text" name="q" placeholder="Search" value="{{ search }}">
+		<input type="submit" value="Go">
+	</form>
+</aside>
+
+<h2>Popular</h2>
+
+<ul>
+{% for mod in mods %}
+	<li>
+		<span style="padding-right:10px">{{ forloop.index }})</span>
+		<a href="{{ mod.forum_url }}">{{ mod.title }}</a> by {{ mod.author }}<br />
+		<p>
+			{{ mod.description | truncate: 100, '…' }}
+		</p>
+		<a href="{{ mod.download_link }}">Download</a> [{{ mod.downloads }}] |
+		<a href="{{ mod.forum_url }}">Forum Topic</a> |
+		<a href="/status/?a={{ mod.author }}">{{ mod.author }}'s mods</a>
+	</li>
+{% endfor %}
+</ul>
+
+{% include "footer" %}

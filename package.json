@@ -1,0 +1,25 @@
+{
+  "name": "minetest-mod-database",
+  "version": "0.1.0",
+  "description": "Minetest Mod Database",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rubenwardy/minetest-mod-database.git"
+  },
+  "author": "rubenwardy",
+  "license": "LGPL-2.1+",
+  "bugs": {
+    "url": "https://github.com/rubenwardy/minetest-mod-database/issues"
+  },
+  "homepage": "https://github.com/rubenwardy/minetest-mod-database#readme",
+  "dependencies": {
+    "apicache": "^0.7.4",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "express-liquid": "^0.2.6"
+  }
+}
