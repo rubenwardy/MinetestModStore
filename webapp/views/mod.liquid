@@ -1,0 +1,17 @@
+{% include "header" %}
+
+<h2>{{ mod.title }}</h2>
+
+<a href="/mod/{{ mod.author }}/{{ mod.basename }}/">{{ mod.title }}</a>
+by
+{{ mod.author }}
+<br />
+
+<p>
+	{{ mod.description | truncate: 100, '…' }}
+</p>
+<a href="{{ mod.download.url }}">Download</a> |
+<a href="{{ mod.forum_url }}">Forum Topic</a> |
+<a href="/mods/?a={{ mod.author }}">{{ mod.author }}'s mods</a>
+
+{% include "footer" %}

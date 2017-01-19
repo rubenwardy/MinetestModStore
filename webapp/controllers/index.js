@@ -11,10 +11,12 @@ router.get("/", function(req, res) {
 		include: [ db.User ]
 	}).then(function(mods) {
 		res.render("index", {
-			title: "Minetest Mod Database",
+			title: "Welcome",
 			mods: mods.map(db.convertRowToMod)
 		})
 	})
 })
+
+router.use(require("./mods"))
 
 module.exports = router
