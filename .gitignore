@@ -5,6 +5,7 @@ downloads.txt
 reports.json
 downloads.json
 /data
+*.sqlite
 
 
 # Created by https://www.gitignore.io/api/node,linux

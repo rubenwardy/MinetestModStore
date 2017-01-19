@@ -15,13 +15,18 @@
 {% for mod in mods %}
 	<li>
 		<span style="padding-right:10px">{{ forloop.index }})</span>
-		<a href="{{ mod.forum_url }}">{{ mod.title }}</a> by {{ mod.author }}<br />
+
+		<a href="/mod/{{ mod.author }}/{{ mod.basename }}/">{{ mod.title }}</a>
+		by
+		{{ mod.author }}
+		<br />
+
 		<p>
 			{{ mod.description | truncate: 100, '…' }}
 		</p>
-		<a href="{{ mod.download_link }}">Download</a> [{{ mod.downloads }}] |
+		<a href="{{ mod.download.url }}">Download</a> |
 		<a href="{{ mod.forum_url }}">Forum Topic</a> |
-		<a href="/status/?a={{ mod.author }}">{{ mod.author }}'s mods</a>
+		<a href="/mods/?a={{ mod.author }}">{{ mod.author }}'s mods</a>
 	</li>
 {% endfor %}
 </ul>
