@@ -3,7 +3,7 @@
 const express = require("express")
 const router = express.Router()
 
-router.get("/get-work", function(req, res) {
+router.get("/job", function(req, res) {
 	var worker_token = req.query.token
 	var db = req.app.get("db")
 	db.Worker.findOne({
@@ -42,6 +42,11 @@ router.get("/get-work", function(req, res) {
 			res.status(401).status("Unauthorized")
 		}
 	})
+})
+
+router.post("/job", function(req, res) {
+	console.log(req.body)
+	res.send("OK")
 })
 
 module.exports = router
