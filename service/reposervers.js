@@ -115,7 +115,7 @@ class GithubRepoServer extends RepoServer {
 			} else {
 				me.misses++;
 				me.github.repos.getContent({
-					user: repo.user,
+					owner: repo.user,
 					repo: repo.repo,
 					path: "description.txt"
 				}).then(function(data) {
@@ -132,23 +132,25 @@ class GithubRepoServer extends RepoServer {
 						resolve(desc);
 					} else {
 						if (!cached) {
+							cached = {}
 							me.cache[idx] = {};
 						}
 						cached.desc = {
 							text: "",
 							timestamp: new Date().getTime()
 						}
-						reject();
+						resolve(null);
 					}
 				}).catch(function(e) {
 					if (!cached) {
+						cached = {}
 						me.cache[idx] = {};
 					}
 					cached.desc = {
 						text: "",
 						timestamp: new Date().getTime()
 					}
-					reject();
+					reject(e);
 				})
 			}
 		});
@@ -161,12 +163,12 @@ class GithubRepoServer extends RepoServer {
 		var me = this;
 		return new Promise(function(resolve, reject) {
 			me.github.repos.getContent({
-				user: repo.user,
+				owner: repo.user,
 				repo: repo.repo,
 				path: "depends.txt"
 			}).then(function(data) {
 				if (data && data.content) {
-					resolve(new Buffer(data.content, 'base64'));
+					resolve(new Buffer(data.content, 'base64').toString());
 				} else {
 					reject();
 				}
@@ -193,7 +195,7 @@ class GithubRepoServer extends RepoServer {
 			} else {
 				me.misses++;
 				var req = {
-					user: repo.user,
+					owner: repo.user,
 					repo: repo.repo,
 					per_page: 1
 				};
@@ -276,7 +278,7 @@ class GithubRepoServer extends RepoServer {
 
 			cached.hook_registered = true;
 			me.github.repos.createHook({
-				user: repo.user,
+				owner: repo.user,
 				repo: repo.repo,
 				name: "web",
 				config: {

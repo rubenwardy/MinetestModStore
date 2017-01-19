@@ -1,0 +1,4 @@
+{
+	"github_auth": "GITHUB_TOKEN_HERE",
+	"cache_dir": "/tmp/"
+}
