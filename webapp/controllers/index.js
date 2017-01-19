@@ -18,5 +18,6 @@ router.get("/", function(req, res) {
 })
 
 router.use(require("./mods"))
+router.use("/workers", require("./workerapi"))
 
 module.exports = router

@@ -38,6 +38,18 @@ var Mod = sequelize.define("mod", {
 User.hasMany(Mod)
 Mod.belongsTo(User)
 
+var Worker = sequelize.define("worker", {
+	token: Sequelize.STRING(128)
+})
+
+var Work = sequelize.define("work", {
+	author: Sequelize.STRING(100),
+	basename: Sequelize.STRING(100),
+	work_type: Sequelize.ENUM("fetch", "scan", "forum")
+})
+
+Work.belongsTo(Worker)
+
 const CMod = require("./../../common/mod")
 function convertRowToMod(row) {
 	var mod = new CMod(row.user.username)
@@ -64,6 +76,8 @@ function convertRowToMod(row) {
 async.parallel([
 	function(callback) { User.sync().then(callback) },
 	function(callback) { Mod.sync().then(callback) },
+	function(callback) { Worker.sync().then(callback) },
+	function(callback) { Work.sync().then(callback) },
 	function() {
 		User.findOrCreate({
 			where: {
@@ -98,7 +112,26 @@ async.parallel([
 					approved: true
 				}
 			}).then(function(mod) {
+				Worker.findOrCreate({
+					where: {
+						token: "foobar"
+					},
+					defaults: {}
+				}).then(function(worker) {
+					worker = worker[0]
 
+					Work.findOrCreate({
+						where: {
+							author: "rubenwardy",
+							basename: "awards",
+						},
+						defaults: {
+							work_type: "fetch"
+						}
+					}).then(function(mod) {
+
+					})
+				})
 			})
 		})
 	}])
@@ -106,5 +139,7 @@ async.parallel([
 module.exports = {
 	User: User,
 	Mod: Mod,
+	Work: Work,
+	Worker: Worker,
 	convertRowToMod: convertRowToMod
 }
