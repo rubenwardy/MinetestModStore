@@ -43,12 +43,13 @@ var Worker = sequelize.define("worker", {
 })
 
 var Work = sequelize.define("work", {
-	author: Sequelize.STRING(100),
-	basename: Sequelize.STRING(100),
 	work_type: Sequelize.ENUM("fetch", "scan", "forum")
 })
 
+Mod.hasMany(Work)
+Worker.hasMany(Worker)
 Work.belongsTo(Worker)
+Work.belongsTo(Mod)
 
 const CMod = require("./../../common/mod")
 function convertRowToMod(row) {
@@ -112,6 +113,8 @@ async.parallel([
 					approved: true
 				}
 			}).then(function(mod) {
+				mod = mod[0]
+
 				Worker.findOrCreate({
 					where: {
 						token: "foobar"
@@ -122,10 +125,10 @@ async.parallel([
 
 					Work.findOrCreate({
 						where: {
-							author: "rubenwardy",
-							basename: "awards",
+							modId: mod.id
 						},
 						defaults: {
+							mod: mod,
 							work_type: "fetch"
 						}
 					}).then(function(mod) {

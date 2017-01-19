@@ -16,17 +16,22 @@ router.get("/get-work", function(req, res) {
 				limit: 1,
 				where: {
 					workerId: null
-				}
+				},
+				include: [{
+					model: db.Mod,
+					include: [db.User]
+				}]
 			}).then(function(jobs) {
 				if (jobs && jobs.length == 1) {
 					var job = jobs[0]
-					job.workerId = worker.id
-					job.save()
+					// job.workerId = worker.id
+					// job.save()
+
+					var mod = db.convertRowToMod(job.mod)
 					res.send({
 						work: {
-							author: job.author,
-							basename: job.basename,
-							type: job.work_type
+							type: job.work_type,
+							mod: mod.toPlainDictionary()
 						}
 					})
 				} else {
