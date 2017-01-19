@@ -38,12 +38,13 @@ router.get("/mod/:author/:modname", function(req, res) {
 		include: [{
 			model: db.User,
 			where: { username: req.params.author }
-		}]
+		}, db.Work]
 	}).then(function(mod) {
 		if (mod) {
 			var mod_c = db.convertRowToMod(mod)
 			switch (req.accepts("html", "json")) {
 				case "html":
+					mod_c.works = mod.works
 					res.render("mod", {
 						title: mod.title,
 						mod: mod_c

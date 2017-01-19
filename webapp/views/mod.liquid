@@ -14,4 +14,15 @@ by
 <a href="{{ mod.forum_url }}">Forum Topic</a> |
 <a href="/mods/?a={{ mod.author }}">{{ mod.author }}'s mods</a>
 
+<h3>Jobs</h3>
+
+<ul>
+{% for work in mod.works %}
+<li>{{ work.work_type }}
+	[{% if work.workerId %}assigned to worker {{ work.workerId}}{% else %}Queued{% endif %}]</li>
+{% else %}
+<li><i>No jobs in progress</i></li>
+{% endfor %}
+</ul>
+
 {% include "footer" %}
