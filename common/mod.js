@@ -2,14 +2,14 @@
 
 var ModType = {
 	mod: "mod",
-	modpack: "modpack",
-	game: "game"
+	game: "game",
+	texturepack: "texturepack"
 }
 
 class Mod {
 	constructor(author) {
 		this.author = author || null
-		this.type = "1"
+		this.type = null
 		this.basename = null
 		this.title = null
 		this.description = ""

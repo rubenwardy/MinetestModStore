@@ -19,6 +19,7 @@ var User = sequelize.define("user", {
 
 var Mod = sequelize.define("mod", {
 	basename: Sequelize.STRING(100),
+	type: Sequelize.ENUM("mod", "game", "texturepack"),
 
 	title: Sequelize.STRING(100),
 	description: Sequelize.STRING(900),
@@ -41,6 +42,7 @@ const CMod = require("./../../common/mod")
 function convertRowToMod(row) {
 	var mod = new CMod(row.user.username)
 	mod.basename = row.basename
+	mod.type = row.type
 	mod.title = row.title
 	mod.description = row.description
 	mod.forum_id = row.forum_id
@@ -80,6 +82,7 @@ async.parallel([
 				},
 				defaults: {
 					user: user,
+					type: "mod",
 
 					title: "Awards",
 					description: "Adds awards to minetest",
