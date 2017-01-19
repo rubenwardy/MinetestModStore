@@ -21,6 +21,7 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "express-liquid": "^0.2.6",
+    "request": "^2.79.0",
     "sequelize": "^3.28.0",
     "sqlite3": "^3.1.8"
   }

@@ -11,25 +11,31 @@ router.get("/get-work", function(req, res) {
 			token: worker_token
 		}
 	}).then(function(worker) {
-		db.Work.findAll({
-			limit: 1,
-			where: {
-				workerId: null
-			}
-		}).then(function(jobs) {
-			if (jobs && jobs.length == 1) {
-				var job = jobs[0]
-				job.workerId = worker.id
-				job.save()
-				res.send({
-					author: job.author,
-					basename: job.basename,
-					type: job.work_type
-				})
-			} else {
-				res.send({})
-			}
-		})
+		if (worker) {
+			db.Work.findAll({
+				limit: 1,
+				where: {
+					workerId: null
+				}
+			}).then(function(jobs) {
+				if (jobs && jobs.length == 1) {
+					var job = jobs[0]
+					job.workerId = worker.id
+					job.save()
+					res.send({
+						work: {
+							author: job.author,
+							basename: job.basename,
+							type: job.work_type
+						}
+					})
+				} else {
+					res.send({})
+				}
+			})
+		} else {
+			res.status(401).status("Unauthorized")
+		}
 	})
 })
 
