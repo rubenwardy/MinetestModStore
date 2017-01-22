@@ -17,6 +17,7 @@ router.get("/", function(req, res) {
 	})
 })
 
+router.use("/static", express.static("static"))
 router.use(require("./mods"))
 router.use("/workers", require("./workerapi"))
 

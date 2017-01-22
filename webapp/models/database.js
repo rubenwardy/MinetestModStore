@@ -25,18 +25,24 @@ var Mod = sequelize.define("mod", {
 	description: Sequelize.STRING(900),
 	forum_id: Sequelize.STRING(40),
 
-	download_url: Sequelize.STRING(250),
-	download_hash: Sequelize.STRING(256),
-	download_size: Sequelize.INTEGER,
-
 	repo_url: Sequelize.STRING(250),
 	repo_hash: Sequelize.STRING(250),
 
-	approved: Sequelize.BOOLEAN
+	approved: Sequelize.BOOLEAN,
 })
 
 User.hasMany(Mod)
 Mod.belongsTo(User)
+
+var ModDownload = sequelize.define("moddownload", {
+	url: Sequelize.STRING(250),
+	hash: Sequelize.STRING(256),
+	size: Sequelize.INTEGER,
+
+	approved: Sequelize.BOOLEAN,
+})
+Mod.hasMany(ModDownload)
+ModDownload.belongsTo(Mod)
 
 var Worker = sequelize.define("worker", {
 	token: Sequelize.STRING(128)
@@ -60,11 +66,23 @@ function convertRowToMod(row) {
 	mod.description = row.description
 	mod.forum_id = row.forum_id
 	mod.forum_url = mod.getForumURL()
-	mod.download = {
-		url: row.download_url,
-		hash: row.download_hash || "",
-		size: row.download_size || -1
+	mod.downloads = []
+	mod.download = null
+
+	if (row.moddownloads) {
+		mod.downloads = row.moddownloads.map((download) => {
+			return {
+				url: download.url,
+				hash: download.hash || "",
+				size: download.size || -1
+			}
+		})
+
+		if (mod.downloads.length > 0) {
+			mod.download = mod.downloads[0]
+		}
 	}
+
 	mod.repo = {
 		url: row.repo,
 		hash: row.repo_hash
@@ -77,6 +95,7 @@ function convertRowToMod(row) {
 async.parallel([
 	function(callback) { User.sync().then(callback) },
 	function(callback) { Mod.sync().then(callback) },
+	function(callback) { ModDownload.sync().then(callback) },
 	function(callback) { Worker.sync().then(callback) },
 	function(callback) { Work.sync().then(callback) },
 	function() {
@@ -103,10 +122,6 @@ async.parallel([
 					description: "Adds awards to minetest",
 					forum_id: "4870",
 
-					download_url: "https://github.com/minetest-mods/awards/zipball/master",
-					download_hash: "",
-					download_size: -1,
-
 					repo_url: "https://github.com/minetest-mods/awards/",
 					repo_hash: "c994978683355417783586262914d4be128cbdf0",
 
@@ -115,24 +130,39 @@ async.parallel([
 			}).then(function(mod) {
 				mod = mod[0]
 
-				Worker.findOrCreate({
+				ModDownload.findOrCreate({
 					where: {
-						token: "foobar"
+						modId: mod.id
 					},
-					defaults: {}
-				}).then(function(worker) {
-					worker = worker[0]
+					defaults: {
+						mod: mod,
 
-					Work.findOrCreate({
+						url: "https://github.com/minetest-mods/awards/zipball/master",
+						hash: "",
+						size: -1,
+
+						approved: true
+					}
+				}).then(function(moddownload) {
+					Worker.findOrCreate({
 						where: {
-							modId: mod.id
+							token: "foobar"
 						},
-						defaults: {
-							mod: mod,
-							work_type: "fetch"
-						}
-					}).then(function(mod) {
+						defaults: {}
+					}).then(function(worker) {
+						worker = worker[0]
 
+						Work.findOrCreate({
+							where: {
+								modId: mod.id
+							},
+							defaults: {
+								mod: mod,
+								work_type: "fetch"
+							}
+						}).then(function(mod) {
+
+						})
 					})
 				})
 			})
@@ -142,6 +172,7 @@ async.parallel([
 module.exports = {
 	User: User,
 	Mod: Mod,
+	ModDownload: ModDownload,
 	Work: Work,
 	Worker: Worker,
 	convertRowToMod: convertRowToMod
