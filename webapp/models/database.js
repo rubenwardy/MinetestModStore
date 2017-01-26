@@ -10,12 +10,13 @@ var sequelize = new Sequelize("database", "", "", {
 	},
 
 	// SQLite only
-	storage: "../db.sqlite"
+	storage: "db.sqlite"
 })
 
 var User = sequelize.define("user", {
 	username: { type: Sequelize.STRING(100), unique: true }
 })
+
 
 var Mod = sequelize.define("mod", {
 	basename: Sequelize.STRING(100),

@@ -1,7 +1,5 @@
 "use strict"
 
-require("process").chdir(__dirname)
-
 var app = require("express")()
 
 // Support JSON and URL encoded bodies
@@ -10,6 +8,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({	 // to support URL-encoded bodies
 	extended: true
 }))
+
 
 // Caching for JSON APIs
 var apicache = require("apicache").options({ debug: false }).middleware
@@ -29,6 +28,7 @@ var options = {
 	// if an error occurred while rendering, show detail or not, default to false
 	traceError: false
 }
+
 app.set("view engine", "liquid")
 app.engine("liquid", expressLiquid(options))
 app.use(expressLiquid.middleware)
@@ -41,6 +41,6 @@ app.set("db", db)
 app.use(require("./controllers"))
 
 // Start server
-app.listen(8080, "127.0.0.1", function () {
+app.listen(require("process").env.PORT, "127.0.0.1", function () {
 	console.log("Minetest Mod Database listening on port 8080!")
 })

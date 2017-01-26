@@ -1,0 +1,23 @@
+{
+	"apps" : [
+		{
+			"name": "webapp",
+			"cwd": "./webapp",
+			"script": "./webapp/index.js",
+			"watch": true,
+			"env": {
+				 "PORT": "4100"
+			}
+		},
+
+		{
+			"name": "worker1",
+			"cwd": "./worker",
+			"script": "./worker/index.js",
+			"watch": true,
+			"env": {
+				"FARMER_URL": "http://localhost:4100"
+			}
+		}
+	]
+}

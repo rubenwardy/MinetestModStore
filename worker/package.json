@@ -1,0 +1,22 @@
+{
+  "name": "minetest-mod-database-worker",
+  "version": "0.1.0",
+  "description": "Minetest Mod Database Worker",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rubenwardy/minetest-mod-database.git"
+  },
+  "author": "rubenwardy",
+  "license": "LGPL-2.1+",
+  "bugs": {
+    "url": "https://github.com/rubenwardy/minetest-mod-database/issues"
+  },
+  "homepage": "https://github.com/rubenwardy/minetest-mod-database#readme",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "github": "^8.1.0",
+    "request": "^2.79.0"
+  }
+}

@@ -1,9 +1,8 @@
 "use strict"
 
-require("process").chdir(__dirname)
-
 const FarmerAPI = require("./farmerapi")
-const api = new FarmerAPI()
+
+const api = new FarmerAPI(require("process").env.FARMER_URL)
 const fs = require("fs")
 const settings = JSON.parse(fs.readFileSync("settings.json", 'utf8'))
 

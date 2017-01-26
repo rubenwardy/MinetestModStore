@@ -1,13 +1,16 @@
 "use strict"
 
 var request = require("request")
-var API_URL = "http://localhost:8080"
 
 class FarmerAPI {
+	constructor(url) {
+		this.url = url
+	}
+
 	getWork() {
-		return new Promise(function(resolve, reject) {
+		return new Promise((resolve, reject) => {
 			request.get({
-				url: API_URL + '/workers/job',
+				url: this.url + '/workers/job',
 				qs: {
 					token: "foobar"
 				},
@@ -23,9 +26,9 @@ class FarmerAPI {
 	}
 
 	sendResults(results) {
-		return new Promise(function(resolve, reject) {
+		return new Promise((resolve, reject) => {
 			request.post({
-				url: API_URL + '/workers/job',
+				url: this.url + '/workers/job',
 				qs: {
 					token: "foobar"
 				},
